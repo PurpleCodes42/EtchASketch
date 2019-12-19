@@ -5,8 +5,11 @@
 </head>
 <body>
     <!-- html here -->
+    <h1>Etch A Sketch</h1>
     <p></p>
-    <button>Clear Grid</button>
+    <button id=clear>Clear Grid</button>
+    <button id=pixels>Set pixels</button>
+    <button id=random>Random Color</button>
     <p></p>
     <div id = container style = "width: 640px; height: 640px"></div>
   <script>
@@ -18,6 +21,7 @@
     function createDiv(pixelRow){
         for (let j = 0; j < pixelRow; j++){
             for (let i = 0; i< pixelRow; i++){
+                console.log("im creating");
                 container.appendChild(createSquare(pixelRow));
             }
         }
@@ -39,12 +43,20 @@
         this.style.backgroundColor = "black";
     }
 
-    function clearGrid(){
+    function blankGrid(){
+        const grids = document.querySelectorAll(".grids");
+        grids.forEach(grids => grids.style.backgroundColor = "white");  
+    }
+
+    function clearGrid() {
         const grids = document.querySelectorAll(".grids");
         grids.forEach(grids => grids.remove());  
+    }
+    
+    function setPixels(){
+        clearGrid();
         let pixelsInARow = window.prompt("how many pixs shall the new grid " +
             "have on each side?");
-        console.log(pixelsInARow);
         createDiv(pixelsInARow); 
         putEventListeners();
     }
@@ -54,11 +66,17 @@
         grids.forEach(grids => grids.addEventListener("mouseover", changeColor));
     }
 
-    createDiv(30);
+    createDiv(20);
     putEventListeners();  
 
-    const button = document.querySelector("button");
-    button.addEventListener("click", clearGrid);
+    const button1 = document.querySelector("#clear");
+    button1.addEventListener("click", blankGrid);
+
+    const button2 = document.querySelector("#pixels");
+    button2.addEventListener("click", setPixels);
+
+    const button3 = document.querySelector("#random");
+    button3.addEventListener("click", putEventListeners);
 
   </script>
 </body>
