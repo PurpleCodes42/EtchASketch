@@ -5,28 +5,61 @@
 </head>
 <body>
     <!-- html here -->
+    <p></p>
+    <button>Clear Grid</button>
+    <p></p>
     <div id = container style = "width: 640px; height: 640px"></div>
   <script>
     /* JS here */
     const container = document.querySelector('#container');
     const contWidth = container.offsetWidth;
-    let divWidth = contWidth/16 + "px";
-    const contWidth = container.offsetHeight;
-    let divHeight = contWidth/16 + "px";
-    console.log(divWidth);
-    function createDiv(){
+    const contHeight = container.offsetHeight;
+    
+    function createDiv(pixelRow){
+        for (let j = 0; j < pixelRow; j++){
+            for (let i = 0; i< pixelRow; i++){
+                container.appendChild(createSquare(pixelRow));
+            }
+        }
+    }
+
+    function createSquare(pixelRow){
+        let divWidth = contWidth/pixelRow + "px";
+        let divHeight = contWidth/pixelRow + "px";
+
         const div = document.createElement('div');
         div.style.width = divWidth;
         div.style.height = divHeight;
         div.style.cssFloat = "left";
+        div.classList.add("grids");
         return div;
     }
 
-    for (let j = 0; j < 16; j++){
-        for (let i = 0; i< 16; i++){
-            container.appendChild(createDiv());
-        }
+    function changeColor(){
+        this.style.backgroundColor = "black";
     }
+
+    function clearGrid(){
+        const grids = document.querySelectorAll(".grids");
+        grids.forEach(grids => grids.remove());  
+        let pixelsInARow = window.prompt("how many pixs shall the new grid " +
+            "have on each side?");
+        console.log(pixelsInARow);
+        createDiv(pixelsInARow); 
+        putEventListeners();
+    }
+
+    function putEventListeners(){
+        const grids = document.querySelectorAll(".grids");
+        grids.forEach(grids => grids.addEventListener("mouseover", changeColor));
+    }
+
+    createDiv(30);
+    putEventListeners();  
+
+    const button = document.querySelector("button");
+    button.addEventListener("click", clearGrid);
+
   </script>
 </body>
 </html>
