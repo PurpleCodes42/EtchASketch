@@ -11,7 +11,8 @@
     <button id=pixels>Set pixels</button>
     <button id=random>Random Color</button>
     <p></p>
-    <div id = container style = "width: 640px; height: 640px"></div>
+    <div id = container style = "width: 640px; height: 640px; 
+        outline: solid; outline-color: black"></div>
   <script>
     /* JS here */
     const container = document.querySelector('#container');
@@ -21,7 +22,6 @@
     function createDiv(pixelRow){
         for (let j = 0; j < pixelRow; j++){
             for (let i = 0; i< pixelRow; i++){
-                console.log("im creating");
                 container.appendChild(createSquare(pixelRow));
             }
         }
@@ -39,17 +39,17 @@
         return div;
     }
 
-    function changeColor(){
-        this.style.backgroundColor = "black";
+    function changeColor(grids, color){
+        grids.style.backgroundColor = color;
     }
 
     function blankGrid(){
-        const grids = document.querySelectorAll(".grids");
+        const grids = document.querySelectorAll(".grids"); 
         grids.forEach(grids => grids.style.backgroundColor = "white");  
     }
 
     function clearGrid() {
-        const grids = document.querySelectorAll(".grids");
+        const grids = document.querySelectorAll(".grids"); 
         grids.forEach(grids => grids.remove());  
     }
     
@@ -58,16 +58,38 @@
         let pixelsInARow = window.prompt("how many pixs shall the new grid " +
             "have on each side?");
         createDiv(pixelsInARow); 
-        putEventListeners();
+        putEventListeners("white");
     }
 
-    function putEventListeners(){
-        const grids = document.querySelectorAll(".grids");
-        grids.forEach(grids => grids.addEventListener("mouseover", changeColor));
+    function putEventListeners(color){  
+        const grids = document.querySelectorAll(".grids");   
+        grids.forEach(grids => grids.addEventListener(
+            "mouseover", 
+            function () {
+                changeColor(grids, color);
+            },
+        ));
+    }
+
+    function random_rgba() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + 
+        ',' + r().toFixed(1) + ')';
+}
+
+    function setRandomColor(){
+        blankGrid();
+        const grids = document.querySelectorAll(".grids");   
+        grids.forEach(grids => grids.addEventListener(
+            "mouseover", 
+            function () {
+                changeColor(grids, random_rgba());
+            },
+        ));
     }
 
     createDiv(20);
-    putEventListeners();  
+    putEventListeners("black"); 
 
     const button1 = document.querySelector("#clear");
     button1.addEventListener("click", blankGrid);
@@ -76,8 +98,8 @@
     button2.addEventListener("click", setPixels);
 
     const button3 = document.querySelector("#random");
-    button3.addEventListener("click", putEventListeners);
-
+    button3.addEventListener("click", setRandomColor);
+        
   </script>
 </body>
 </html>
