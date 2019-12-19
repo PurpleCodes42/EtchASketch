@@ -2,17 +2,17 @@
 <html>
 <head>
   <title>EtchASketch</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- html here -->
     <h1>Etch A Sketch</h1>
     <p></p>
+    <div id = container></div>
+    <p></p>
     <button id=clear>Clear Grid</button>
     <button id=pixels>Set pixels</button>
     <button id=random>Random Color</button>
-    <p></p>
-    <div id = container style = "width: 640px; height: 640px; 
-        outline: solid; outline-color: black"></div>
   <script>
     /* JS here */
     const container = document.querySelector('#container');
@@ -34,7 +34,8 @@
         const div = document.createElement('div');
         div.style.width = divWidth;
         div.style.height = divHeight;
-        div.style.cssFloat = "left";
+        div.style.cssFloat = "right";
+        div.style.backgroundColor = "white";
         div.classList.add("grids");
         return div;
     }
@@ -58,7 +59,7 @@
         let pixelsInARow = window.prompt("how many pixs shall the new grid " +
             "have on each side?");
         createDiv(pixelsInARow); 
-        putEventListeners("white");
+        putEventListeners("black");
     }
 
     function putEventListeners(color){  
