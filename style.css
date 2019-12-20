@@ -16,9 +16,25 @@ button {
     font-weight: bold;
 }
 
+button #newColors {
+    outline: null;
+    margin-right: 20px;
+    width: 350px;
+    background-color: rgb(224, 184, 184);
+    font-family: Verdana;
+    font-weight: bold;
+}
+
 #container {
-    width: 640px; 
-    height: 640px; 
+    width: 500px; 
+    height: 500px; 
     outline: solid; 
     outline-color: black"
+}
+
+#colorPalette {
+    width: 500px;
+    height: 50px;
+    outline: solid;
+    outline-color: black;
 }

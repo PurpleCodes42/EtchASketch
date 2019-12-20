@@ -13,11 +13,55 @@
     <button id=clear>Clear Grid</button>
     <button id=pixels>Set pixels</button>
     <button id=random>Random Color</button>
+    <button id="grey">Grey Scale</button>
+    <p></p>
+    <h3>Select a color:</h3>
+    <div id=colorPalette></div>
+    <p></p>
+    <button id=newColors>refresh for new ones!</button>
   <script>
     /* JS here */
     const container = document.querySelector('#container');
     const contWidth = container.offsetWidth;
     const contHeight = container.offsetHeight;
+
+    function getGrids() {
+        const grids = document.querySelectorAll(".grids");
+        return grids;    
+    }
+
+    function createColorPalette(){
+        let divWidth = contWidth/10 + "px";
+        let divHeight = contWidth/10 + "px";
+        for (let i = 0; i<10; i++){
+            const div = document.createElement("div");
+            div.style.width = divWidth;
+            div.style.height = divHeight;
+            div.style.cssFloat = "right";
+            div.style.backgroundColor = random_rgba();
+            div.classList.add("diffColors");
+            colorPalette.appendChild(div);
+        }
+    }
+
+    function refreshColors(){
+        const palette = document.querySelectorAll(".diffColors");
+        palette.forEach(palette => palette.remove());  
+        createColorPalette();
+        putColorListeners();
+    }
+
+    function putColorListeners(){  
+        const diffColors = document.querySelectorAll(".diffColors"); 
+        grids = getGrids();   
+        diffColors.forEach(diffColors => diffColors.addEventListener(
+            "mouseover", 
+            function () {
+                startDraw(diffColors.style.backgroundColor);
+            },
+        ));
+    }
+
     
     function createDiv(pixelRow){
         for (let j = 0; j < pixelRow; j++){
@@ -45,12 +89,12 @@
     }
 
     function blankGrid(){
-        const grids = document.querySelectorAll(".grids"); 
+        grids = getGrids(); 
         grids.forEach(grids => grids.style.backgroundColor = "white");  
     }
 
     function clearGrid() {
-        const grids = document.querySelectorAll(".grids"); 
+        grids = getGrids(); 
         grids.forEach(grids => grids.remove());  
     }
     
@@ -59,11 +103,11 @@
         let pixelsInARow = window.prompt("how many pixs shall the new grid " +
             "have on each side?");
         createDiv(pixelsInARow); 
-        putEventListeners("black");
+        startDraw("black");
     }
 
-    function putEventListeners(color){  
-        const grids = document.querySelectorAll(".grids");   
+    function startDraw(color){  
+        grids = getGrids();    
         grids.forEach(grids => grids.addEventListener(
             "mouseover", 
             function () {
@@ -72,15 +116,9 @@
         ));
     }
 
-    function random_rgba() {
-    var o = Math.round, r = Math.random, s = 255;
-    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + 
-        ',' + r().toFixed(1) + ')';
-}
-
-    function setRandomColor(){
+    function setRandomColor(){  
         blankGrid();
-        const grids = document.querySelectorAll(".grids");   
+        grids = getGrids();    
         grids.forEach(grids => grids.addEventListener(
             "mouseover", 
             function () {
@@ -89,17 +127,52 @@
         ));
     }
 
+    function changeGreyColor(grids){
+        opacity = grids.style.opacity;
+        if (opacity != null){
+            opacity = opacity + 0.1;
+            opacity = String(opacity);
+            grids.style.opacity = opacity;
+        }
+    }
+
+    function random_rgba() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + 
+        ',' + r().toFixed(1) + ')';
+    }
+
+
+    function setGrayScale(){
+        blankGrid();
+        grids = getGrids();    
+        grids.forEach(grids => grids.addEventListener(
+            "mouseover", 
+            function () {
+                changeGreyColor(grids);
+            },
+        ));
+    }
+    
     createDiv(20);
-    putEventListeners("black"); 
+    startDraw("black");
+    createColorPalette();
+    putColorListeners();
 
-    const button1 = document.querySelector("#clear");
-    button1.addEventListener("click", blankGrid);
+    const buttonClear = document.querySelector("#clear");
+    buttonClear.addEventListener("click", blankGrid);
 
-    const button2 = document.querySelector("#pixels");
-    button2.addEventListener("click", setPixels);
+    const buttonPix = document.querySelector("#pixels");
+    buttonPix.addEventListener("click", setPixels);
 
-    const button3 = document.querySelector("#random");
-    button3.addEventListener("click", setRandomColor);
+    const buttonRan = document.querySelector("#random");
+    buttonRan.addEventListener("click", setRandomColor);
+
+    const buttonNewCol = document.querySelector("#newColors");
+    buttonNewCol.addEventListener("click", refreshColors);
+
+    const buttonGrey = document.querySelector("#grey");
+    buttonGrey.addEventListener("click", setGrayScale);
         
   </script>
 </body>
