@@ -79,18 +79,55 @@
         div.style.width = divWidth;
         div.style.height = divHeight;
         div.style.cssFloat = "right";
-        div.style.backgroundColor = "white";
+        div.style.backgroundColor = "rgba(255, 255, 255, 1)";
         div.classList.add("grids");
         return div;
     }
 
     function changeColor(grids, color){
+        console.log(grids);
         grids.style.backgroundColor = color;
+        console.log(grids);
     }
 
     function blankGrid(){
         grids = getGrids(); 
-        grids.forEach(grids => grids.style.backgroundColor = "white");  
+        grids.forEach(grids => grids.style.backgroundColor = changeColor(grids, "white"));  
+    }
+
+    function removeListeners(){
+        grids.forEach(grids => grids.removeEventListener(
+            "mouseover", 
+            function () {
+                changeColor(grids, color);
+            },
+        ));
+        grids.forEach(grids => grids.removeEventListener(
+            "mouseover", 
+            function () {
+                changeColor(grids, random_rgba());
+            },
+        ));
+        grids.forEach(grids => grids.removeEventListener(
+            "mouseover", 
+            function () {
+                if (grids.style.opacity==""){
+                    console.log("in the 0s");
+                let color = "rgba(64, 64, 64, " + 0.1 + ")"; 
+                changeColor(grids, color);
+                return;
+                }
+                else if (grids.style.opacity=="1"){   
+                    return;
+                }
+                else {
+                    console.log("in the add");
+                    let color = "rgba(64, 64, 64, " + grids.style.opacity + 0.1 + ")"; 
+                    changeColor(grids, color);
+                } 
+                
+            },
+        ));
     }
 
     function clearGrid() {
@@ -103,7 +140,7 @@
         let pixelsInARow = window.prompt("how many pixs shall the new grid " +
             "have on each side?");
         createDiv(pixelsInARow); 
-        startDraw("black");
+        startDraw("rgba(0, 0, 0, 1");
     }
 
     function startDraw(color){  
@@ -117,7 +154,6 @@
     }
 
     function setRandomColor(){  
-        blankGrid();
         grids = getGrids();    
         grids.forEach(grids => grids.addEventListener(
             "mouseover", 
@@ -127,35 +163,37 @@
         ));
     }
 
-    function changeGreyColor(grids){
-        opacity = grids.style.opacity;
-        if (opacity != null){
-            opacity = opacity + 0.1;
-            opacity = String(opacity);
-            grids.style.opacity = opacity;
-        }
-    }
-
     function random_rgba() {
     var o = Math.round, r = Math.random, s = 255;
     return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + 
-        ',' + r().toFixed(1) + ')';
+        '1)';
     }
 
-
     function setGrayScale(){
-        blankGrid();
+        removeListeners();
         grids = getGrids();    
         grids.forEach(grids => grids.addEventListener(
-            "mouseover", 
+            "click", 
             function () {
-                changeGreyColor(grids);
+                var alpha = parseFloat(grids.style.backgroundColor.split(',')[3]);
+                if (isNaN(alpha)){
+                    console.log("nan")
+                    changeColor(grids, "rgba(64, 64, 64, 0.1)");  
+                }
+                else if (alpha == 1){
+                    return
+                }
+                else {
+                console.log("0,1")
+                alpha2 = alpha + 0.1;
+                changeColor(grids, "rgba(64, 64, 64, " + alpha2 + ")");  
+                }           
             },
         ));
     }
     
-    createDiv(20);
-    startDraw("black");
+    createDiv(25);
+    startDraw("rgba(0, 0, 0, 1");
     createColorPalette();
     putColorListeners();
 
