@@ -63,7 +63,7 @@
     const diffColors = document.querySelectorAll(".diffColors"); 
     grids = getGrids();   
     diffColors.forEach(diffColors => diffColors.addEventListener(
-        "mouseover", 
+        "click", 
         function () {
             startDraw(diffColors.style.backgroundColor);
         },
@@ -111,10 +111,10 @@
  function startDraw(color){  
      grids = getGrids();    
      grids.forEach(grids => grids.addEventListener(
-         "mouseover", 
+         "click", 
          function test() {
              changeColor(grids, color);
-             grids.removeEventListener("mouseover", test);
+             grids.removeEventListener("click", test);
          },
      ));    
  }
@@ -122,10 +122,10 @@
  function setRandomColor(){  
      grids = getGrids();    
      grids.forEach(grids => grids.addEventListener(
-         "mouseover", 
+         "click", 
          function test() {
              changeColor(grids, random_rgba());
-             grids.removeEventListener("mouseover", test);
+             grids.removeEventListener("click", test);
          },
      ));
  }
@@ -139,7 +139,7 @@
  function setGrayScale(){
      grids = getGrids();    
      grids.forEach(grids => grids.addEventListener(
-         "mouseover", 
+         "click", 
          function test() {
              var alpha = parseFloat(grids.style.backgroundColor.split(',')[3]);
              if (isNaN(alpha)){
