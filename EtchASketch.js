@@ -20,6 +20,7 @@
 
  createDiv(16);
  createColorPalette();
+ startDraw("rgba(0, 0, 0, 1");
 
  /* creation of all the squares etc.*/
 
@@ -63,7 +64,7 @@
     const diffColors = document.querySelectorAll(".diffColors"); 
     grids = getGrids();   
     diffColors.forEach(diffColors => diffColors.addEventListener(
-        "click", 
+        "mouseover", 
         function () {
             startDraw(diffColors.style.backgroundColor);
         },
@@ -83,8 +84,6 @@
      putColorListeners();
  }
 
-
-
  function changeColor(grids, color){
      grids.style.backgroundColor = color;
  }
@@ -92,7 +91,6 @@
  function blankGrid(){
      grids = getGrids(); 
      grids.forEach(grids => grids.style.backgroundColor = changeColor(grids, "white"));  
-     startDraw("rgba(0, 0, 0, 1");
  }
 
  function clearGrid() {
@@ -109,25 +107,25 @@
  }
 
  function startDraw(color){  
+     removeListeners();
      grids = getGrids();    
      grids.forEach(grids => grids.addEventListener(
-         "click", 
+         "mouseover", 
          function test() {
              changeColor(grids, color);
-             grids.removeEventListener("click", test);
+             grids.removeEventListener("mouseover", test);
          },
      ));    
  }
 
+ function rand(event) {
+    changeColor(event.target, random_rgba());
+ }
+
  function setRandomColor(){  
-     grids = getGrids();    
-     grids.forEach(grids => grids.addEventListener(
-         "click", 
-         function test() {
-             changeColor(grids, random_rgba());
-             grids.removeEventListener("click", test);
-         },
-     ));
+    removeListeners();
+    grids = getGrids();    
+    grids.forEach(grids => grids.addEventListener("mouseover", rand));
  }
 
  function random_rgba() {
@@ -135,23 +133,38 @@
  return 'rgba(' + o(r()*s) + ',' +
      o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
  }
+ 
+ function grey(event){
+    var r = event.target.style.backgroundColor.split(',')[0];
+            r = r.slice(5);
+            r = parseFloat(r);
+            var g = parseFloat(event.target.style.backgroundColor.split(',')[1]);
+            var b = parseFloat(event.target.style.backgroundColor.split(',')[2]);
+            var a = parseFloat(event.target.style.backgroundColor.split(',')[3]);
+            if (r == 64 && g == 64 && b == 64){
+                if (isNaN(a)){
+                    changeColor(event.target, "rgba(64, 64, 64, 0.1)");  
+                }
+                else if (a == 0.9){
+                    return;
+                }
+                else {
+                    a2 = a + 0.1;
+                    changeColor(event.target, "rgba(64, 64, 64, " + a2 + ")");  
+                }
+            }
+            else {
+                changeColor(event.target, "rgba(64, 64, 64, 0.1)"); 
+            }
+ }
 
  function setGrayScale(){
+     removeListeners();
      grids = getGrids();    
-     grids.forEach(grids => grids.addEventListener(
-         "click", 
-         function test() {
-             var alpha = parseFloat(grids.style.backgroundColor.split(',')[3]);
-             if (isNaN(alpha)){
-                 changeColor(grids, "rgba(64, 64, 64, 0.1)");  
-             }
-             else if (alpha == 1){
-                 return;  
-             }
-             else {
-                 alpha2 = alpha + 0.1;
-                 changeColor(grids, "rgba(64, 64, 64, " + alpha2 + ")");  
-             }     
-         },
-     ));
+     grids.forEach(grids => grids.addEventListener("mouseover", grey));
+ }
+
+ function removeListeners(){
+    grids.forEach(grids => grids.removeEventListener("mouseover", grey));
+    grids.forEach(grids => grids.removeEventListener("mouseover", rand));
  }
