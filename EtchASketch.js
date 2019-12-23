@@ -70,12 +70,45 @@
         },
     ));
 }
+
  /*functions for the buttons*/
+
+ /* generally useful */
 
  function getGrids() {
      const grids = document.querySelectorAll(".grids");
      return grids;    
  }
+
+ function changeColor(grids, color){
+    grids.style.backgroundColor = color;
+}
+
+function removeListeners(){
+    grids.forEach(grids => grids.removeEventListener("mouseover", grey));
+    grids.forEach(grids => grids.removeEventListener("mouseover", rand));
+ }
+
+function startDraw(color){  
+    removeListeners();
+    grids = getGrids();    
+    grids.forEach(grids => grids.addEventListener(
+        "mouseover", 
+        function test() {
+            changeColor(grids, color);
+            grids.removeEventListener("mouseover", test);
+        },
+    ));    
+}
+
+/* Clear Button */
+
+function blankGrid(){
+    grids = getGrids(); 
+    grids.forEach(grids => grids.style.backgroundColor = changeColor(grids, "white"));  
+}
+
+/* Refresh Button */
 
  function refreshColors(){
      const palette = document.querySelectorAll(".diffColors");
@@ -84,19 +117,7 @@
      putColorListeners();
  }
 
- function changeColor(grids, color){
-     grids.style.backgroundColor = color;
- }
-
- function blankGrid(){
-     grids = getGrids(); 
-     grids.forEach(grids => grids.style.backgroundColor = changeColor(grids, "white"));  
- }
-
- function clearGrid() {
-     grids = getGrids(); 
-     grids.forEach(grids => grids.remove());  
- }
+/* Set Pixel Button */
  
  function setPixels(){
      clearGrid();
@@ -106,19 +127,14 @@
      startDraw("rgba(0, 0, 0, 1");
  }
 
- function startDraw(color){  
-     removeListeners();
-     grids = getGrids();    
-     grids.forEach(grids => grids.addEventListener(
-         "mouseover", 
-         function test() {
-             changeColor(grids, color);
-             grids.removeEventListener("mouseover", test);
-         },
-     ));    
- }
+ function clearGrid() {
+    grids = getGrids(); 
+    grids.forEach(grids => grids.remove());  
+}
 
- function rand(event) {
+/* All Random Stuff */
+
+function rand(event) {
     changeColor(event.target, random_rgba());
  }
 
@@ -133,6 +149,8 @@
  return 'rgba(' + o(r()*s) + ',' +
      o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
  }
+
+ /* Grey Scale */
  
  function grey(event){
     var r = event.target.style.backgroundColor.split(',')[0];
@@ -164,7 +182,4 @@
      grids.forEach(grids => grids.addEventListener("mouseover", grey));
  }
 
- function removeListeners(){
-    grids.forEach(grids => grids.removeEventListener("mouseover", grey));
-    grids.forEach(grids => grids.removeEventListener("mouseover", rand));
- }
+ 
